@@ -33,8 +33,8 @@ public class QuoteServiceImpl implements QuoteService {
 	@Autowired
 	private VoteRepository voteRepository;
 
-	@Override
 	@Transactional
+	@Override
 	public Quote postQuote(QuoteRequest request) {
 		User user = userService.getUserById(request.getUserId());
 
@@ -50,9 +50,13 @@ public class QuoteServiceImpl implements QuoteService {
 	public Quote getRandomQuote() {
 		long countOfQuotes = quoteRepository.count() + 1;
 		Random random = new Random();
-		return quoteRepository.findById(random.nextLong(1, countOfQuotes))
-				.orElseThrow(() -> new NoQuotesException(
-						"Database doesn't have any of quotes"));
+		try {
+			return quoteRepository.findById(random.nextLong(1, countOfQuotes))
+					.orElseThrow(() -> new NoQuotesException(
+							"Database doesn't have any of quotes"));
+		} catch (IllegalArgumentException e) {
+			throw new NoQuotesException("Database doesn't have any of quotes");
+		}
 	}
 
 	@Override
@@ -63,7 +67,8 @@ public class QuoteServiceImpl implements QuoteService {
 		quote.setVotes(voteRepository.findByQuote(quote));
 		return quote;
 	}
-
+	
+	@Transactional
 	@Override
 	public Quote updateQuote(QuoteRequest request, Long id) {
 		Quote quote = getQuoteById(id);
@@ -76,11 +81,13 @@ public class QuoteServiceImpl implements QuoteService {
 		return quoteRepository.save(quote);
 	}
 
+	@Transactional
 	@Override
 	public void deleteQuoteById(Long id) {
 		quoteRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public void voteForQuote(Long quoteId, Long userId, boolean isUpvote) {
 		User user = userService.getUserById(userId);

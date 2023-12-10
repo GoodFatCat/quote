@@ -46,7 +46,7 @@ public class QuoteController {
 	}
 
 	@GetMapping("/random")
-	public ResponseEntity<QuoteResponse> getQuote() {
+	public ResponseEntity<QuoteResponse> getRandomQuote() {
 		try {
 			Quote randomQuote = quoteService.getRandomQuote();
 			QuoteResponse response = QuoteResponse
@@ -88,7 +88,7 @@ public class QuoteController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteQuote(@PathVariable Long id) {
 		quoteService.deleteQuoteById(id);
-		return ResponseEntity.ok("Deleted");
+		return ResponseEntity.ok("Quote deleted");
 	}
 
 	@PostMapping("/{quoteId}/vote")
