@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  quote:
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+    build:
+      context: .
+    environment:
+      BOT_NAME: ${BOT_NAME}
+      BOT_TOKEN: ${BOT_TOKEN}
+      BOT_DB_USERNAME: ${BOT_DB_USERNAME}
+      BOT_DB_PASSWORD: ${BOT_DB_PASSWORD}
+    networks:
+      - mynetwork
+    container_name: 'quote-trial-task'
+    restart: always
+networks:
+  mynetwork:
