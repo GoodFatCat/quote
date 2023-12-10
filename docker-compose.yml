@@ -6,8 +6,7 @@ services:
       - '8080:8080'
     expose:
       - '8080'
-    build:
-      context: .
+    image: goodfatcat/quotetrialtask
     networks:
       - mynetwork
     container_name: 'quote-trial-task'
